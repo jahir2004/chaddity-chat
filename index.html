@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4f0">
+    <title>Chaddity — meet someone new</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #202420;
+        background: #f5f4f0;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        --muted: #73796f;
+        --green: #4c704f;
+        --line: #e9e8e1;
+      }
+
+      * { box-sizing: border-box; }
+      body { min-width: 320px; min-height: 100vh; margin: 0; }
+      button, input { font: inherit; }
+      button { cursor: pointer; }
+      .app { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: 100vh; }
+      aside { display: flex; flex-direction: column; padding: 28px 22px; background: #fff; border-right: 1px solid var(--line); }
+      .brand { display: flex; align-items: center; gap: 10px; color: #263c2a; font-size: 19px; font-weight: 750; letter-spacing: -0.7px; }
+      .brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 12px; color: #fff; background: var(--green); font-size: 17px; }
+      .side-copy { margin: 44px 0 24px; }
+      .eyebrow { color: #8a8d82; font-size: 10px; font-weight: 750; letter-spacing: 1.5px; text-transform: uppercase; }
+      .side-copy h1 { margin: 10px 0 9px; font-size: 25px; line-height: 1.2; letter-spacing: -1px; }
+      .side-copy p, .safety p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+      .interest-title { margin: 8px 0 11px; color: #656c62; font-size: 12px; font-weight: 650; }
+      .interests { display: flex; flex-wrap: wrap; gap: 7px; }
+      .interest { padding: 7px 10px; border: 1px solid #e5e7de; border-radius: 99px; color: #596456; background: #fafbf7; font-size: 11px; }
+      .safety { display: flex; gap: 10px; margin-top: auto; padding: 14px; border-radius: 13px; background: #f6f7f2; }
+      .safety-icon { flex: none; }
+      .safety strong { font-size: 12px; }
+      .safety p { margin: 4px 0 0; font-size: 11px; }
+      main { display: flex; flex-direction: column; width: min(100%, 920px); min-height: 100vh; margin: 0 auto; padding: 28px 38px 24px; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+      .room-label { color: #777d72; font-size: 12px; }
+      .online { display: flex; align-items: center; gap: 7px; color: #61685e; font-size: 11px; }
+      .dot { width: 7px; height: 7px; border-radius: 50%; background: #83a77b; }
+      .partner { display: flex; align-items: center; gap: 12px; padding: 23px 0; }
+      .avatar { display: grid; width: 44px; height: 44px; place-items: center; border-radius: 15px; background: #e9eee2; font-size: 22px; }
+      .partner-name { font-size: 14px; font-weight: 700; }
+      .partner-status { margin-top: 4px; color: var(--muted); font-size: 11px; }
+      .chat { display: flex; flex: 1; flex-direction: column; gap: 15px; min-height: 320px; padding: 23px 0; border-top: 1px solid var(--line); overflow-y: auto; }
+      .welcome { align-self: center; max-width: 370px; margin: auto 0; padding: 19px 22px; border: 1px solid var(--line); border-radius: 17px; background: #fff; text-align: center; }
+      .welcome-icon { font-size: 25px; }
+      .welcome h2 { margin: 10px 0 6px; font-size: 16px; }
+      .welcome p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+      .message { max-width: min(72%, 480px); padding: 11px 14px; border-radius: 15px; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+      .message.them { align-self: flex-start; border: 1px solid var(--line); border-top-left-radius: 5px; background: #fff; }
+      .message.you { align-self: flex-end; border-top-right-radius: 5px; color: #fff; background: var(--green); }
+      .message.system { align-self: center; padding: 5px 9px; color: #83877e; background: transparent; font-size: 11px; text-align: center; }
+      .composer-wrap { padding-top: 15px; border-top: 1px solid var(--line); }
+      .composer { display: flex; gap: 9px; padding: 7px; border: 1px solid #e3e4dc; border-radius: 15px; background: #fff; }
+      .composer input { flex: 1; min-width: 0; padding: 0 9px; border: 0; outline: 0; color: #252923; background: transparent; font-size: 13px; }
+      .composer input::placeholder { color: #a2a59d; }
+      .send, .match { border: 0; border-radius: 10px; color: #fff; background: var(--green); font-weight: 650; transition: background .15s, transform .15s; }
+      .send { padding: 10px 15px; font-size: 12px; }
+      .send:hover, .match:hover { background: #3f6042; }
+      .send:active, .match:active { transform: scale(.98); }
+      button:disabled, input:disabled { cursor: not-allowed; opacity: .48; }
+      .controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 13px; }
+      .hint { color: #878b82; font-size: 10px; }
+      .match { min-width: 157px; padding: 11px 17px; font-size: 12px; }
+      .match.next { color: #4d654e; border: 1px solid #dce3d8; background: #f5f7f1; }
+      .match.next:hover { background: #e9eee4; }
+      .demo-note { margin: 15px 0 0; color: #93968d; font-size: 10px; line-height: 1.5; text-align: center; }
+      @media (max-width: 700px) {
+        .app { grid-template-columns: 1fr; }
+        aside { display: none; }
+        main { min-height: 100dvh; padding: 19px 17px; }
+        .chat { min-height: 250px; }
+        .hint { max-width: 155px; line-height: 1.4; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside>
+        <div class="brand"><span class="brand-mark" aria-hidden="true">✳</span> chaddity</div>
+        <section class="side-copy">
+          <div class="eyebrow">A little serendipity</div>
+          <h1>Good chats start with hello.</h1>
+          <p>Meet someone new, share a thought, and see where the conversation goes.</p>
+        </section>
+        <div class="interest-title">A few things to talk about</div>
+        <div class="interests" aria-label="Conversation ideas">
+          <span class="interest">Music</span><span class="interest">Travel</span>
+          <span class="interest">Little joys</span><span class="interest">Weekend plans</span>
+        </div>
+        <section class="safety">
+          <span class="safety-icon" aria-hidden="true">🛡️</span>
+          <div><strong>Keep it kind</strong><p>Be respectful, and don't share personal information with strangers.</p></div>
+        </section>
+      </aside>
+      <main>
+        <header class="topbar">
+          <div class="room-label">YOUR RANDOM CHAT ROOM</div>
+          <div class="online"><span class="dot" aria-hidden="true"></span><span id="status" aria-live="polite">Ready when you are</span></div>
+        </header>
+        <section class="partner" aria-label="Chat partner">
+          <div class="avatar" id="avatar" aria-hidden="true">👋</div>
+          <div><div class="partner-name" id="partner-name">Your next hello</div><div class="partner-status" id="partner-status">A new conversation is one click away</div></div>
+        </section>
+        <section class="chat" id="chat" aria-label="Conversation" aria-live="polite" aria-relevant="additions text">
+          <div class="welcome" id="welcome">
+            <div class="welcome-icon" aria-hidden="true">🌿</div>
+            <h2>Someone interesting is out there</h2>
+            <p>Start a chat to get matched. Say hello, or skip anytime to meet someone new.</p>
+          </div>
+        </section>
+        <div class="composer-wrap">
+          <form class="composer" id="message-form">
+            <input id="message-input" type="text" maxlength="500" placeholder="Say something nice…" aria-label="Your message" autocomplete="off" disabled>
+            <button class="send" type="submit" disabled>Send ↗</button>
+          </form>
+          <div class="controls">
+            <span class="hint">A friendly reminder: be kind and stay safe.</span>
+            <button class="match" id="match-button" type="button">Find someone&nbsp; →</button>
+          </div>
+          <p class="demo-note">Demo mode: chat partners are simulated. No messages are sent to or received from other people.</p>
+        </div>
+      </main>
+    </div>
+    <script>
+      (() => {
+        const people = [
+          { name: "Sky", emoji: "🌤️", hello: "Hey! What's one small thing that made you smile lately?", replies: ["That sounds lovely! What do you like most about it?", "I love that. Got any other little joys to share?", "That's a great pick! What got you into it?"] },
+          { name: "River", emoji: "🌊", hello: "Hi there! If you could take a trip anywhere, where would you go?", replies: ["That would be such an adventure. What would you do first?", "Ooh, good choice! Is that somewhere you've been before?", "I'd love to hear more about that. What else is on your travel list?"] },
+          { name: "Sage", emoji: "🌱", hello: "Hello! What have you been listening to lately?", replies: ["Nice! I'll have to give that a listen. Any song you'd recommend?", "Music always makes a day better. What else is in your rotation?", "I like the sound of that! What kind of music do you usually enjoy?"] },
+          { name: "Rowan", emoji: "🍂", hello: "Hey! How's your day going so far?", replies: ["I hear you! What are you looking forward to this week?", "Thanks for sharing. What do you like to do to unwind?", "That sounds interesting! Tell me a little more?"] }
+        ];
+        const chat = document.querySelector("#chat");
+        const form = document.querySelector("#message-form");
+        const input = document.querySelector("#message-input");
+        const send = form.querySelector("button");
+        const matchButton = document.querySelector("#match-button");
+        const status = document.querySelector("#status");
+        const partnerName = document.querySelector("#partner-name");
+        const partnerStatus = document.querySelector("#partner-status");
+        const avatar = document.querySelector("#avatar");
+        let state = "idle";
+        let activePerson;
+        let timers = [];
+
+        function addMessage(text, kind) {
+          const message = document.createElement("div");
+          message.className = `message ${kind}`;
+          message.textContent = text;
+          chat.append(message);
+          chat.scrollTop = chat.scrollHeight;
+        }
+
+        function clearTimers() {
+          timers.forEach(clearTimeout);
+          timers = [];
+        }
+
+        function setState(nextState) {
+          state = nextState;
+          const connected = state === "chatting";
+          input.disabled = !connected;
+          send.disabled = !connected;
+          matchButton.disabled = state === "matching";
+          matchButton.classList.toggle("next", connected);
+          matchButton.textContent = state === "matching" ? "Finding someone…" : connected ? "Next stranger  →" : "Find someone  →";
+          status.textContent = state === "matching" ? "Finding a match…" : connected ? "You're connected" : "Ready when you are";
+          if (!connected && state !== "matching") {
+            partnerName.textContent = "Your next hello";
+            partnerStatus.textContent = "A new conversation is one click away";
+            avatar.textContent = "👋";
+          }
+        }
+
+        function startMatch() {
+          clearTimers();
+          chat.replaceChildren();
+          activePerson = null;
+          setState("matching");
+          addMessage("Looking for someone new…", "system");
+          timers.push(setTimeout(() => {
+            activePerson = people[Math.floor(Math.random() * people.length)];
+            partnerName.textContent = activePerson.name;
+            partnerStatus.textContent = "Just matched with you";
+            avatar.textContent = activePerson.emoji;
+            setState("chatting");
+            addMessage(`You're chatting with ${activePerson.name}. Say hello!`, "system");
+            timers.push(setTimeout(() => addMessage(activePerson.hello, "them"), 500));
+            input.focus();
+          }, 700));
+        }
+
+        matchButton.addEventListener("click", () => {
+          if (state !== "matching") {
+            if (state === "chatting") addMessage("You moved on to meet someone new.", "system");
+            startMatch();
+          }
+        });
+
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const text = input.value.trim();
+          if (state !== "chatting" || !text) return;
+          addMessage(text, "you");
+          input.value = "";
+          const person = activePerson;
+          timers.push(setTimeout(() => {
+            if (state === "chatting" && person === activePerson) {
+              addMessage(person.replies[Math.floor(Math.random() * person.replies.length)], "them");
+            }
+          }, 900 + Math.random() * 700));
+        });
+      })();
+    </script>
+  </body>
+</html>
