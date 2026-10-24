@@ -7,6 +7,9 @@ Route::view('/', 'chatapp')->name('home');
 
 Route::middleware('web')->group(function () {
     Route::view('/chatapp', 'chatapp')->name('chatapp');
+    Route::view('/chat-test', 'chat-test')->name('chat-test');
+    // Livewire component laadt nu automatisch in de view
+    Route::view('messages', 'pages.messages.index')->name('messages');
 });
 
 Route::prefix('{current_team}')
