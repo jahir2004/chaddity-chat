@@ -13,9 +13,15 @@
             <livewire:team-switcher />
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                <flux:sidebar.group :heading="__('Chat')" class="grid">
+                    <flux:sidebar.item icon="message-square" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                        {{ __('Messages') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="users" :href="route('dashboard')" wire:navigate>
+                        {{ __('Contacts') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="search" :href="route('dashboard')" wire:navigate>
+                        {{ __('Search Chats') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>

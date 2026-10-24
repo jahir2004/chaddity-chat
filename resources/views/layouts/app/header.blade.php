@@ -10,8 +10,14 @@
             <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
 
             <flux:navbar class="-mb-px max-lg:hidden">
-                <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                    {{ __('Dashboard') }}
+                <flux:navbar.item icon="message-square" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                    {{ __('Messages') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="users" :href="route('dashboard')" wire:navigate>
+                    {{ __('Contacts') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="search" :href="route('dashboard')" wire:navigate>
+                    {{ __('Search') }}
                 </flux:navbar.item>
             </flux:navbar>
 
@@ -58,9 +64,15 @@
             <livewire:team-switcher />
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')">
-                    <flux:sidebar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard')  }}
+                <flux:sidebar.group :heading="__('Chat')">
+                    <flux:sidebar.item icon="message-square" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                        {{ __('Messages')  }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="users" :href="route('dashboard')" wire:navigate>
+                        {{ __('Contacts') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="search" :href="route('dashboard')" wire:navigate>
+                        {{ __('Search Chats') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>

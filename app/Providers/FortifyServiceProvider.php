@@ -53,9 +53,7 @@ class FortifyServiceProvider extends ServiceProvider
             'teamInvitation' => $this->teamInvitation($request),
         ]));
         Fortify::verifyEmailView(fn () => view('pages::auth.verify-email'));
-        /* @chisel-password-confirmation */
         Fortify::confirmPasswordView(fn () => view('pages::auth.confirm-password'));
-        /* @end-chisel-password-confirmation */
         Fortify::resetPasswordView(fn () => view('pages::auth.reset-password'));
         Fortify::requestPasswordResetLinkView(fn () => view('pages::auth.forgot-password'));
     }

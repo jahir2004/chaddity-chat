@@ -30,4 +30,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::livewire('settings/teams/{team}', 'pages::teams.edit')->name('teams.edit');
     });
 });
-

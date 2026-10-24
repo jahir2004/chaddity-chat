@@ -5,7 +5,6 @@ namespace Tests\Feature\Settings;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Fortify\Features;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -24,16 +23,13 @@ class SecurityTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-            /* @chisel-password-confirmation */
             ->withSession(['auth.password_confirmed_at' => time()])
-            /* @end-chisel-password-confirmation */
             ->get(route('security.edit'));
 
         $response->assertOk();
 
     }
 
-    /* @chisel-password-confirmation */
     public function test_security_settings_page_requires_password_confirmation_when_enabled(): void
     {
         $user = User::factory()->create();
@@ -43,7 +39,6 @@ class SecurityTest extends TestCase
 
         $response->assertRedirect(route('password.confirm'));
     }
-    /* @end-chisel-password-confirmation */
 
     public function test_security_settings_page_renders_without_two_factor_when_feature_is_disabled(): void
     {
@@ -52,9 +47,7 @@ class SecurityTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            /* @chisel-password-confirmation */
             ->withSession(['auth.password_confirmed_at' => time()])
-            /* @end-chisel-password-confirmation */
             ->get(route('security.edit'))
             ->assertOk()
             ->assertSee('Update password')
@@ -63,9 +56,7 @@ class SecurityTest extends TestCase
             ->assertDontSee('Two-factor authentication');
     }
 
-    public function test_two_factor_authentication_disabled_when_confirmation_abandoned_between_requests(): void
-    {
-    }
+    public function test_two_factor_authentication_disabled_when_confirmation_abandoned_between_requests(): void {}
 
     public function test_password_can_be_updated(): void
     {

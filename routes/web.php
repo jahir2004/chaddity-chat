@@ -3,7 +3,11 @@
 use App\Http\Middleware\EnsureTeamMembership;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::view('/', 'chatapp')->name('home');
+
+Route::middleware('web')->group(function () {
+    Route::view('/chatapp', 'chatapp')->name('chatapp');
+});
 
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
